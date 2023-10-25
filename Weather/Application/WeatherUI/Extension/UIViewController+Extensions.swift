@@ -16,6 +16,15 @@ extension UIViewController {
         view.addGestureRecognizer(tap)
     }
 
+    func showAlert(title: String,
+                   message: String,
+                   buttonTitle: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertButton = UIAlertAction(title: buttonTitle, style: .default, handler: nil)
+        alert.addAction(alertButton)
+        present(alert, animated: true, completion: nil)
+    }
+
     @objc
     func dismissKeyboard() {
         view.endEditing(true)

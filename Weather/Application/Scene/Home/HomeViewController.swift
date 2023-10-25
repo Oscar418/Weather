@@ -112,6 +112,7 @@ class HomeViewController: UIViewController {
     }
 
     private func getWeatherData() {
+        activityIndicator.startAnimating()
         viewModel.hasInternet(completion: { [weak self] hasConnection in
             guard let self = self else { return }
             if hasConnection {
@@ -123,6 +124,9 @@ class HomeViewController: UIViewController {
     }
 
     private func populateStoredData() {
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+        }
         viewModel.getStoredWeatherData(completion: { [weak self] weather, forecast in
             guard let self = self,
             let weather = weather,
@@ -239,7 +243,6 @@ extension HomeViewController: CLLocationManagerDelegate {
             self.populateData(weather: weather)
         })
 
-        activityIndicator.startAnimating()
         viewModel.getForecast(lat: location.coordinate.latitude,
                               long: location.coordinate.longitude,
                               completion: { [weak self] forecast in
@@ -250,7 +253,11 @@ extension HomeViewController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager,
                          didFailWithError error: Error) {
+        activityIndicator.stopAnimating()
         locationManager.stopUpdatingLocation()
         Logger.shared.logDebug(error.localizedDescription)
+        self.showAlert(title: "Error",
+                       message: "Could not determine current location, Please make sure location service is enabled.",
+                       buttonTitle: "Ok")
     }
 }
