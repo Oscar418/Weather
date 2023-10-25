@@ -1,0 +1,9 @@
+xcassets:
+  inputs:
+    - Weather/Resources/Image.xcassets
+    - Weather/Resources/Color.xcassets
+  outputs:
+    - templateName: swift4
+      output: Weather/Resources/Generated/Assets.swift
+      params:
+        enumName: WeatherAsset
